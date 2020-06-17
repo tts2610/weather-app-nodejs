@@ -25,13 +25,14 @@ router.get("/", async function(req, res, next) {
     }
 });
 
-router.post("/postGeo", async function(req, res, next) {
+router.post("/postGeo", async function(req, res) {
     console.log(req.body);
     let { lat, lon } = req.body;
     let forecast = await getForecast([lon, lat]);
-    return res.json({
-        status: "success",
-        forecast: forecast,
+    console.log(forecast);
+    return res.render("index", {
+        title: "Awsome Weather App",
+        forecast: forecast.current,
     });
 });
 

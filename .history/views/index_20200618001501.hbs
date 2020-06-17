@@ -30,7 +30,7 @@
             const data = await response.json();
             const forecast = data.forecast.current;
             console.log(forecast)
-            document.getElementById("forecast").innerHTML = "<ul><li>Temperature: " + forecast.temp + "</li><li>Description:" + forecast.weather[0].description + "</li></ul>";
+            document.getElementById("forecast").innerHTML = `<ul><li>Temperature:${forecast.temp}</li><li>Description:{forecast.weather.0.description}</li ></ul >`;
         })
     }
 </script>

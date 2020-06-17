@@ -1,0 +1,35 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+
+<form action="/" method="GET">
+    <input name="city" placeholder="Enter a city name" required>
+    <input type="submit" value="Get Forecast">
+</form>
+
+<div id="content">
+    {{#if forecast}}
+    <ul>
+        <li>Temperature: {{forecast.temp}}</li>
+        <li>Description: {{forecast.weather.0.description}}</li>
+    </ul>
+    {{/if}}
+</div>
+
+
+<script>
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const data = { lat, lon };
+            const options = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }
+            fetch('/', options);
+        })
+    }
+</script>

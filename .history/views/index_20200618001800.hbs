@@ -1,0 +1,54 @@
+< h1 > {
+        { title } } < /h1> <
+    p > Welcome to {
+        { title } } < /p>
+
+<
+form action = "/"
+method = "GET" >
+    <
+    input name = "city"
+placeholder = "Enter a city name"
+required >
+    <
+    input type = "submit"
+value = "Get Forecast" >
+    <
+    /form> <
+    div id = "forecast" > < /div> {
+        {# if forecast } } <
+    ul >
+    <
+    li > Temperature: {
+        { forecast.temp } } < /li> <
+    li > Description: {
+        { forecast.weather .0.description } } < /li> <
+    /ul> {
+        {
+            /if}}
+
+
+            <
+            script >
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(async position => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const options = {
+                            method: 'POST',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ lat, lon })
+                        }
+                        const response = await fetch('/postGeo', options);
+                        const data = await response.json();
+                        const forecast = data.forecast.current;
+                        console.log(forecast)
+                        document.getElementById("forecast").innerHTML = `<ul>
+                <li>Temperature:${forecast.temp}</li>
+                <li>Description:${forecast.weather.0.description}</li>
+        </ul>`;
+                    })
+                } <
+                /script>

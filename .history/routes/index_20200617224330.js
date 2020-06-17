@@ -5,12 +5,20 @@ var router = express.Router();
 
 /* GET home page. */
 router.get("/", async function(req, res, next) {
+    console.log("aaaaa");
     try {
         const { city } = req.query;
         let forecast;
         if (city) {
             let result = await getGeocode(city);
             forecast = await getForecast(result);
+            return res.render("index", {
+                title: "Awsome Weather App",
+                forecast: forecast.current,
+            });
+        } else {
+            let { lat, lon } = req.body;
+            forecast = await getForecast([lon, lat]);
             return res.render("index", {
                 title: "Awsome Weather App",
                 forecast: forecast.current,
@@ -25,13 +33,13 @@ router.get("/", async function(req, res, next) {
     }
 });
 
-router.post("/postGeo", async function(req, res, next) {
+router.post("/postGeo", async function(req, res) {
     console.log(req.body);
     let { lat, lon } = req.body;
     let forecast = await getForecast([lon, lat]);
-    return res.json({
+    res.json({
         status: "success",
-        forecast: forecast,
+        forecast: forecast.current,
     });
 });
 

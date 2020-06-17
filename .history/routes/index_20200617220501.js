@@ -25,14 +25,9 @@ router.get("/", async function(req, res, next) {
     }
 });
 
-router.post("/postGeo", async function(req, res, next) {
-    console.log(req.body);
-    let { lat, lon } = req.body;
-    let forecast = await getForecast([lon, lat]);
-    return res.json({
-        status: "success",
-        forecast: forecast,
-    });
+router.post("/postGeo", function(req, res) {
+    console.log("Aaaaa");
+    console.log(req);
 });
 
 module.exports = router;
