@@ -1,0 +1,15 @@
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url(https://wallup.net/wp-content/uploads/2018/09/27/196279-blur-gaussian-blur.jpg);
+}
+
+a {
+    color: #00B7FF;
+}
+
+#rowForecast {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,40 @@
+<form class="text-center mb-5" action="/" method="GET">
+    <input name="city" placeholder="Enter a city name" required>
+    <input type="submit" value="Get Forecast">
+</form>
+<h1 class="text-center">{{title}}</h1>
+<div class="text-center" id="forecast">
+    {{#if forecast}}
+    <div class="row" id="rowForecast">
+        <div class="col-2 text-right">
+            <img src="http://openweathermap.org/img/wn/{{forecast.weather.0.icon}}@2x.png">
+        </div>
+        <div class="col-10 text-center">
+            <div class="row">Temperature: {{forecast.temp}}</div>
+            <div class="row">Description: {{forecast.weather.0.description}}</div>
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+
+<script>
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(async position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const options = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ lat, lon })
+            }
+            const response = await fetch('/postGeo', options);
+            const data = await response.json();
+            const forecast = data.forecast.current;
+
+            document.getElementById("forecast").innerHTML = '<div class="row" id="rowForecast"><div class="col-5"><img src="http://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@2x.png"></div><div class="col-7"><div class="row">Temperature:' + forecast.temp + '</div><div class="row">Description:' + forecast.weather[0].description + '</div></div></div>';
+        })
+    }
+</script>

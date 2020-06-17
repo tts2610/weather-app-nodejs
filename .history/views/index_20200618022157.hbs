@@ -1,0 +1,84 @@
+<form class="text-center mb-5" action="/" method="GET">
+    <input name="city" placeholder="Enter a city name" required>
+    <input type="submit" value="Get Forecast">
+</form>
+<h1 class="text-center">{{title}}</h1>
+<div class="text-center" id="forecast">
+    {{#if forecast}}
+    <div class="row" id="rowForecast">
+        <div class="col-6 text-right pr-5">
+            <img src="http://openweathermap.org/img/wn/{{forecast.weather.0.icon}}@2x.png">
+        </div>
+        <div class="col-6">
+            <div class="row">Temperature: {{forecast.temp}}</div>
+            <div class="row">Description: {{forecast.weather.0.description}}</div>
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<div class="card">
+
+    <h2>Brussels</h2>
+    <h3>Cloudy<span>Wind 10km/h <span class="dot">•</span> Precip 0%</span></h3>
+
+    <div class="row" style="align-items: center;">
+        <div class="col">
+            <h1>23°</h1>
+        </div>
+        <div class="col"><img src="http://openweathermap.org/img/wn/{{forecast.weather.0.icon}}@2x.png"></div>
+    </div>
+    {{!-- <div class="sky">
+        <div class="sun"></div>
+        <div class="cloud">
+            <div class="circle-small"></div>
+            <div class="circle-tall"></div>
+            <div class="circle-medium"></div>
+        </div>
+    </div> --}}
+    <table>
+        <tr class="mt-5">
+            <td>TUE</td>
+            <td>WED</td>
+            <td>THU</td>
+            <td>FRI</td>
+            <td>SAT</td>
+        </tr>
+        <tr>
+            <td>30°</td>
+            <td>34°</td>
+            <td>36°</td>
+            <td>34°</td>
+            <td>37°</td>
+        </tr>
+        <tr>
+            <td>17°</td>
+            <td>22°</td>
+            <td>19°</td>
+            <td>23°</td>
+            <td>19°</td>
+        </tr>
+    </table>
+</div>
+
+
+<script>
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(async position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const options = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ lat, lon })
+            }
+            const response = await fetch('/postGeo', options);
+            const data = await response.json();
+            const forecast = data.forecast.current;
+
+            document.getElementById("forecast").innerHTML = '<div class="row" id="rowForecast"><div class="col-6 text-right pr-5"><img src="http://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@2x.png"></div><div class="col-6"><div class="row">Temperature:' + forecast.temp + '</div><div class="row">Description:' + forecast.weather[0].description + '</div></div></div>';
+        })
+    }
+</script>
